@@ -2,6 +2,9 @@ version: '3'
 volumes:
   e-data:
     driver: local
+networks:
+  elk-net:
+    driver: bridge
 services:
   e:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
@@ -31,20 +34,23 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
-
-  l:
-    image: docker.elastic.co/logstash/logstash:7.9.2
-    ports:
-      - 9600:9600
-    volumes:
-      - ./logstash-simple.conf:/etc/logstash/conf.d/logstash.conf:ro
+    networks:
+      - elk-net
+#  l:
+#    image: docker.elastic.co/logstash/logstash:7.9.2
+#    ports:
+#      - 9600:9600
+#    volumes:
+#      - ./logstash-simple.conf:/etc/logstash/conf.d/logstash.conf:ro
 
   k:
     image: docker.elastic.co/kibana/kibana:7.9.2
     ports:
       - 5601:5601
     environment:
-      - ELASTICSEARCH_HOSTS=http://es01:9200
-      - MONITORING_ENABLED=monitoring.enabled
+      - ELASTICSEARCH_HOSTS=http://e:9200
+#      - MONITORING_ENABLED=monitoring.enabled
     volumes:
       - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+    networks:
+      - elk-net
