@@ -1,5 +1,0 @@
-#  logging.level.com.baeldung=TRACE
-logging:
-  level:
-    ru:
-      miroque: info
