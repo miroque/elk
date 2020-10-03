@@ -17,6 +17,11 @@ public class ApiElk {
     public String getBook() {
         log.info("[noname] -> api");
         log.info("[noname] <- api");
+        log.trace("A TRACE Message");
+        log.debug("A DEBUG Message");
+        log.info("An INFO Message");
+        log.warn("A WARN Message");
+        log.error("An ERROR Message");
         return "It's goot to see you";
     }
 }
